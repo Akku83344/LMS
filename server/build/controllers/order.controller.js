@@ -105,10 +105,12 @@ exports.newPayment = (0, catchAsyncErrors_1.CatchAsyncError)(async (req, res, ne
     try {
         const myPayment = await stripe.paymentIntents.create({
             amount: req.body.amount,
-            currency: "USD",
+            currency: "INR",
             metadata: {
                 company: "E-Learning",
             },
+            //billing_address_collection: "required",
+            description: "E-learning",
             automatic_payment_methods: {
                 enabled: true,
             },

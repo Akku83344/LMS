@@ -36,21 +36,27 @@ exports.createLayout = (0, catchAsyncErrors_1.CatchAsyncError)(async (req, res, 
         }
         if (type === "FAQ") {
             const { faq } = req.body;
-            const faqItems = await Promise.all(faq.map(async (item) => {
+            if (!faq || !Array.isArray(faq)) {
+                return next(new ErrorHandler_1.default("FAQ must be an array", 400));
+            }
+            const faqItems = faq.map((item) => {
                 return {
                     question: item.question,
                     answer: item.answer,
                 };
-            }));
+            });
             await layout_model_1.default.create({ type: "FAQ", faq: faqItems });
         }
         if (type === "Categories") {
             const { categories } = req.body;
-            const categoriesItems = await Promise.all(categories.map(async (item) => {
+            if (!categories || !Array.isArray(categories)) {
+                return next(new ErrorHandler_1.default("Categories must be an array", 400));
+            }
+            const categoriesItems = categories.map((item) => {
                 return {
                     title: item.title,
                 };
-            }));
+            });
             await layout_model_1.default.create({
                 type: "Categories",
                 categories: categoriesItems,
@@ -94,13 +100,16 @@ exports.editLayout = (0, catchAsyncErrors_1.CatchAsyncError)(async (req, res, ne
         }
         if (type === "FAQ") {
             const { faq } = req.body;
+            if (!faq || !Array.isArray(faq)) {
+                return next(new ErrorHandler_1.default("FAQ must be an array", 400));
+            }
             const FaqItem = await layout_model_1.default.findOne({ type: "FAQ" });
-            const faqItems = await Promise.all(faq.map(async (item) => {
+            const faqItems = faq.map((item) => {
                 return {
                     question: item.question,
                     answer: item.answer,
                 };
-            }));
+            });
             await layout_model_1.default.findByIdAndUpdate(FaqItem?._id, {
                 type: "FAQ",
                 faq: faqItems,
@@ -108,14 +117,17 @@ exports.editLayout = (0, catchAsyncErrors_1.CatchAsyncError)(async (req, res, ne
         }
         if (type === "Categories") {
             const { categories } = req.body;
+            if (!categories || !Array.isArray(categories)) {
+                return next(new ErrorHandler_1.default("Categories must be an array", 400));
+            }
             const categoriesData = await layout_model_1.default.findOne({
                 type: "Categories",
             });
-            const categoriesItems = await Promise.all(categories.map(async (item) => {
+            const categoriesItems = categories.map((item) => {
                 return {
                     title: item.title,
                 };
-            }));
+            });
             await layout_model_1.default.findByIdAndUpdate(categoriesData?._id, {
                 type: "Categories",
                 categories: categoriesItems,

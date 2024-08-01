@@ -8,6 +8,7 @@ const http_1 = __importDefault(require("http"));
 const db_1 = __importDefault(require("./utils/db"));
 const socketServer_1 = require("./socketServer");
 const app_1 = require("./app");
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 require("dotenv").config();
 const server = http_1.default.createServer(app_1.app);
 // cloudinary config
